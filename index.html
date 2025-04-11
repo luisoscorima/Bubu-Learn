@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guía para Aprender Tecnología desde Cero</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-family: monospace;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 14px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2c80b4;
+    }
+    code {
+      background: #eef;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    #py-output {
+      background: #f0f0f0;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Guía para Aprender desde Cero</h1>
+
+<!-- Excel -->
+<section>
+  <h2>1. Funciones de Excel</h2>
+
+  <h3>a) SUMA</h3>
+  <p><code>=SUMA(A1:A5)</code> suma los valores de un rango.</p>
+  <input type="text" placeholder="Ejemplo: =SUMA(5, 10, 15)" oninput="mostrarResultadoExcel(this.value, 'res-suma')" />
+  <div id="res-suma"></div>
+
+  <h3>b) SI</h3>
+  <p><code>=SI(A1>10, "Mayor", "Menor o igual")</code> verifica condiciones.</p>
+  <input type="text" placeholder='Ejemplo: =SI(8>5, "Sí", "No")' oninput="mostrarResultadoExcel(this.value, 'res-si')" />
+  <div id="res-si"></div>
+
+  <h3>c) BUSCARV</h3>
+  <p><code>=BUSCARV("Luis", A2:B10, 2, FALSO)</code> busca datos en tabla vertical.</p>
+  <input type="text" placeholder="(simulación textual, no funcional)" disabled />
+  <div>(Este se enseña visualmente más adelante)</div>
+</section>
+
+<!-- Python con turtle -->
+<section>
+  <h2>2. Python con Turtle - Dibujo y Lógica</h2>
+
+  <h3>Lógica básica:</h3>
+  <ul>
+    <li>Variables: <code>edad = 25</code></li>
+    <li>Condicionales: <code>if edad > 18:</code></li>
+    <li>Bucles: <code>for i in range(5):</code></li>
+  </ul>
+
+  <h3>Ejemplo: Dibujar un cuadrado</h3>
+  <textarea id="py-code">import turtle
+t = turtle.Turtle()
+for i in range(4):
+    t.forward(100)
+    t.left(90)
+turtle.done()</textarea>
+  <button onclick="ejecutarPython()">Ejecutar Código</button>
+  <div id="py-output">Salida:</div>
+  <py-script id="py-ejecutor"></py-script>
+
+  <h3>Más ejemplos para probar:</h3>
+  <p><strong>Círculo:</strong></p>
+  <code>
+import turtle<br/>
+t = turtle.Turtle()<br/>
+t.circle(100)<br/>
+turtle.done()
+  </code>
+  <br><br>
+  <p><strong>Triángulo:</strong></p>
+  <code>
+import turtle<br/>
+t = turtle.Turtle()<br/>
+for i in range(3):<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;t.forward(100)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;t.left(120)<br/>
+turtle.done()
+  </code>
+</section>
+
+<!-- HTML básico -->
+<section>
+  <h2>3. HTML Básico - Prueba tus etiquetas</h2>
+  <p>Ejemplo de etiquetas:</p>
+  <ul>
+    <li><code>&lt;h1&gt;</code>: Título grande</li>
+    <li><code>&lt;p&gt;</code>: Párrafo</li>
+    <li><code>&lt;img&gt;</code>: Imagen</li>
+    <li><code>&lt;a href="url"&gt;</code>: Enlace</li>
+  </ul>
+  <textarea id="html-area">
+<h1>Mi primera página</h1>
+<p>Estoy aprendiendo HTML</p>
+<img src="https://placekitten.com/200/200" />
+  </textarea>
+  <button onclick="verHTML()">Ver Resultado</button>
+  <div id="html-output" style="margin-top:10px; padding:10px; background:#eee; border-radius:6px;"></div>
+</section>
+
+<script>
+  function mostrarResultadoExcel(valor, id) {
+    if (!valor.startsWith("=")) {
+      document.getElementById(id).innerText = "Agrega '=' al inicio";
+      return;
+    }
+    try {
+      let resultado;
+      if (valor.includes("SUMA")) {
+        const nums = valor.match(/\d+/g).map(Number);
+        resultado = nums.reduce((a, b) => a + b, 0);
+      } else if (valor.includes("SI")) {
+        resultado = eval(valor.slice(4)); // cuidado: esto es solo demo
+      } else {
+        resultado = "Simulación no soportada";
+      }
+      document.getElementById(id).innerText = "Resultado: " + resultado;
+    } catch (e) {
+      document.getElementById(id).innerText = "Error de sintaxis";
+    }
+  }
+
+  function ejecutarPython() {
+    const codigo = document.getElementById("py-code").value;
+    const py = document.getElementById("py-ejecutor");
+    py.innerHTML = `<py-script>${codigo}</py-script>`;
+    document.getElementById("py-output").innerText = "Ejecutando...";
+  }
+
+  function verHTML() {
+    const html = document.getElementById("html-area").value;
+    document.getElementById("html-output").innerHTML = html;
+  }
+</script>
+
+</body>
+</html>
